@@ -1,4 +1,4 @@
-package main.java.homework.two;
+package homework.two;
 
 import java.io.FileInputStream;
 import java.io.IOException;
