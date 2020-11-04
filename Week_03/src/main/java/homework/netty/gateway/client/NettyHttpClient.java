@@ -15,6 +15,7 @@ import io.netty.handler.logging.LoggingHandler;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,6 +1,7 @@
 package homework.netty.gateway.server.inbound;
 
 import homework.netty.gateway.server.filter.HttpRequestFilterHandler;
+import homework.netty.gateway.server.outbound.NettyHttpOutboundHandler;
 import homework.netty.gateway.server.outbound.OkHttpOutboundHandler;
 import homework.netty.gateway.server.router.RandomHttpEndPointRouter;
 import io.netty.channel.ChannelInitializer;
@@ -23,7 +24,7 @@ public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
                 new HttpServerCodec(),
                 new HttpObjectAggregator(1024 * 1024),
                 new HttpInboundHandler(
-                        //new NettyHttpOutboundHandler(new RandomHttpEndPointRouter()),
+//                        new NettyHttpOutboundHandler(new RandomHttpEndPointRouter()),
                         new OkHttpOutboundHandler(new RandomHttpEndPointRouter()),
                         new HttpRequestFilterHandler()
                 )
