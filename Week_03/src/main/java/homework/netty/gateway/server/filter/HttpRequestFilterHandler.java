@@ -15,4 +15,12 @@ public class HttpRequestFilterHandler extends ChannelInboundHandlerAdapter imple
     public void filter(FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
         fullRequest.headers().set("nio", "xunqirui");
     }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        if (msg instanceof FullHttpRequest){
+            filter((FullHttpRequest) msg, ctx);
+            ctx.fireChannelRead(msg);
+        }
+    }
 }

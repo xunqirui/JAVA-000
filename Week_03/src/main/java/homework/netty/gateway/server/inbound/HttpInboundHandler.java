@@ -19,18 +19,8 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
      */
     private final AbstractHttpOutboundHandler httpOutboundHandler;
 
-    /**
-     * 过滤器
-     */
-    private HttpRequestFilter httpRequestFilter;
-
     public HttpInboundHandler(AbstractHttpOutboundHandler httpOutboundHandler) {
         this.httpOutboundHandler = httpOutboundHandler;
-    }
-
-    public HttpInboundHandler(AbstractHttpOutboundHandler httpOutboundHandler, HttpRequestFilter httpRequestFilter) {
-        this.httpOutboundHandler = httpOutboundHandler;
-        this.httpRequestFilter = httpRequestFilter;
     }
 
     @Override
@@ -42,10 +32,10 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
             FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
-            if (httpRequestFilter != null){
-                // 过滤器过滤
-                httpRequestFilter.filter(fullHttpRequest, ctx);
-            }
+//            if (httpRequestFilter != null){
+//                // 过滤器过滤
+//                httpRequestFilter.filter(fullHttpRequest, ctx);
+//            }
             httpOutboundHandler.handle(fullHttpRequest, ctx);
         } catch (Exception e){
             e.printStackTrace();

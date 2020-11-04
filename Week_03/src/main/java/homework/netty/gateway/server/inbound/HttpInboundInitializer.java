@@ -23,10 +23,14 @@ public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(
                 new HttpServerCodec(),
                 new HttpObjectAggregator(1024 * 1024),
+                // 过滤器
+                new HttpRequestFilterHandler(),
+                // 处理请求
                 new HttpInboundHandler(
-//                        new NettyHttpOutboundHandler(new RandomHttpEndPointRouter()),
-                        new OkHttpOutboundHandler(new RandomHttpEndPointRouter()),
-                        new HttpRequestFilterHandler()
+                        // 开启 netty client 作为 client 端
+//                        new NettyHttpOutboundHandler(new RandomHttpEndPointRouter())
+                        // 开启 okhttp 异步请求作为 client 端
+                        new OkHttpOutboundHandler(new RandomHttpEndPointRouter())
                 )
         );
     }
