@@ -1,7 +1,10 @@
 package homework.two;
 
 
+import okhttp3.Response;
+
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Test
@@ -12,10 +15,19 @@ public class Test {
 
     public static void main(String[] args) {
         try {
-            // 同步 get
             String url = "http://localhost:8808/test";
-            String backResponse = HttpUtil.syncGet(url);
+            // 同步 get
+            HttpClient<Response> client = new OKHttpUtil();
+            String backResponse = client.syncGet(url);
             System.out.println(backResponse);
+            // 异步 get
+            client.asyncGet(url, null, response -> {
+                try {
+                    System.out.println(Arrays.toString(response.body().bytes()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
