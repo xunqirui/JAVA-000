@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:custom="http://www.xunqirui.org/schema/student"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.xunqirui.org/schema/student
+        http://www.xunqirui.org/schema/student.xsd
+">
+
+    <custom:student id="student1">
+        <custom:property name="id" value="1"/>
+        <custom:property name="name" value="qrXun1"/>
+    </custom:student>
+
+    <custom:student id="student2">
+        <custom:property name="id" value="2"/>
+        <custom:property name="name" value="qrXun2"/>
+    </custom:student>
+
+    <custom:klass id="class1">
+        <custom:list name="studentList" ref="student1,student2"/>
+    </custom:klass>
+
+    <custom:school id="school1">
+        <custom:list name="klassList" ref="class1"/>
+    </custom:school>
+</beans>
