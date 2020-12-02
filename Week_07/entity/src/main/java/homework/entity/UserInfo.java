@@ -62,7 +62,7 @@ public class UserInfo implements Serializable {
     /**
      * 出生年月
      */
-    private Object birthday;
+    private String birthday;
 
 
 }
