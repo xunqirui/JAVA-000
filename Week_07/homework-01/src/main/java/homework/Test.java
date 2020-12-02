@@ -1,5 +1,6 @@
 package homework;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import homework.entity.*;
 import homework.jdbc.util.DriverManagerConnectionMethod;
 import homework.jdbc.util.HikariConnectionMethod;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static homework.jdbc.JdbcCrud.*;
 
@@ -23,6 +28,11 @@ import static homework.jdbc.JdbcCrud.*;
  * @author qrXun on 2020/12/2
  */
 public class Test {
+
+    private static final ExecutorService insertPool = new ThreadPoolExecutor(
+            Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 2,
+            1000, TimeUnit.MICROSECONDS, new ArrayBlockingQueue<>(1000000),
+            new ThreadFactoryBuilder().setNameFormat("qrxun-pool-%d").build());
 
     public static void main(String[] args) {
 //        initBasicInfo();
@@ -88,29 +98,38 @@ public class Test {
         int receiverCount = receiverInfoList.size();
         Long nowTimeStamp = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
         for (int i = 0; i < 1000000; i++) {
-            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            GoodsInfo goodsInfo = goodsInfoList.get(random.nextInt(goodsCount));
-            // 商品详情
-            OrderDetail orderDetail = OrderDetail.builder()
-                    .goodsId(goodsInfo.getId())
-                    .goodsNum(1)
-                    .price(goodsInfo.getDiscountPrice())
-                    .totalPrice(goodsInfo.getDiscountPrice())
-                    .build();
-            OrderMainInfo orderMainInfo = OrderMainInfo.builder()
-                    .uniqueId(UUID.randomUUID().toString().replaceAll("-", ""))
-                    .insertTime(now)
-                    .updateTime(now)
-                    .orderStatus(random.nextInt(4))
-                    .totalPrice(orderDetail.getTotalPrice())
-                    .leaveMessage("商品质量很好")
-                    .transportPrice(new BigDecimal("5.11"))
-                    .receiverInfoId(receiverInfoList.get(random.nextInt(receiverCount)).getId())
-                    .buyerId(userInfoList.get(random.nextInt(userCount)).getUniqueId())
-                    .build();
-            orderDetail.setOrderId(orderMainInfo.getUniqueId());
-            orderMainInfoRepository.insertOne(orderMainInfo);
-            orderDetailRepository.insertOne(orderDetail);
+            insertPool.execute(() -> {
+                String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                GoodsInfo goodsInfo = goodsInfoList.get(random.nextInt(goodsCount));
+                // 商品详情
+                OrderDetail orderDetail = OrderDetail.builder()
+                        .goodsId(goodsInfo.getId())
+                        .goodsNum(1)
+                        .price(goodsInfo.getDiscountPrice())
+                        .totalPrice(goodsInfo.getDiscountPrice())
+                        .build();
+                OrderMainInfo orderMainInfo = OrderMainInfo.builder()
+                        .uniqueId(UUID.randomUUID().toString().replaceAll("-", ""))
+                        .insertTime(now)
+                        .updateTime(now)
+                        .orderStatus(random.nextInt(4))
+                        .totalPrice(orderDetail.getTotalPrice())
+                        .leaveMessage("商品质量很好")
+                        .transportPrice(new BigDecimal("5.11"))
+                        .receiverInfoId(receiverInfoList.get(random.nextInt(receiverCount)).getId())
+                        .buyerId(userInfoList.get(random.nextInt(userCount)).getUniqueId())
+                        .build();
+                orderDetail.setOrderId(orderMainInfo.getUniqueId());
+                orderMainInfoRepository.insertOne(orderMainInfo);
+                orderDetailRepository.insertOne(orderDetail);
+            });
+
+        }
+        try {
+            insertPool.awaitTermination(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
+            insertPool.shutdown();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         Long endTimeStamp = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
         System.out.println("--------------耗时" + (endTimeStamp - nowTimeStamp) + "秒-------------------");
