@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="homework.dao.OrderMainInfoDao">
+    <select id="findById" parameterType="Long" resultType="homework.entity.OrderMainInfo">
+        select
+            id,
+            unique_id as uniqueId,
+            insert_time as insertTime,
+            update_time as updateTime,
+            order_status as orderStatus,
+            total_price as totalPrice,
+            leave_message as leaveMessage,
+            transport_price as transportPrice,
+            receiver_info_id as receiverInfoId,
+            buyer_id as buyerId
+        from order_main_info
+        where
+            id = #{id}
+    </select>
+</mapper>
