@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface JdbcCrud<T> {
 
-    String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/e_shop?useUnicode=true&characterEncoding=utf8&useSSL=false";
+    String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/e_shop?useUnicode=true&characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true";
 
     String USER_NAME = "root";
 

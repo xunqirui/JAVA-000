@@ -126,8 +126,8 @@ public class Test {
 
         }
         try {
-            insertPool.awaitTermination(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
             insertPool.shutdown();
+            insertPool.awaitTermination(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
