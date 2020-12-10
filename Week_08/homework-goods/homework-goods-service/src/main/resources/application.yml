@@ -1,0 +1,16 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3307/goods?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true
+  application:
+    name: goods
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
