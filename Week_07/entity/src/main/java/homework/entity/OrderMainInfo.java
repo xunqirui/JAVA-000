@@ -35,7 +35,7 @@ public class OrderMainInfo implements Serializable {
     /**
      * 订单唯一ID
      */
-    private String uniqueId;
+    private Long uniqueId;
     /**
      * 创建时间
      */
@@ -67,6 +67,6 @@ public class OrderMainInfo implements Serializable {
     /**
      * 用户ID
      */
-    private String buyerId;
+    private Long buyerId;
 
 }

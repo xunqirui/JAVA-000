@@ -35,7 +35,7 @@ public class OrderDetail implements Serializable {
     /**
      * 订单ID
      */
-    private String orderId;
+    private Long orderId;
     /**
      * 商品ID
      */
@@ -52,5 +52,9 @@ public class OrderDetail implements Serializable {
      * 总价
      */
     private BigDecimal totalPrice;
+    /**
+     * 用户ID
+     */
+    private Long buyerId;
 
 }

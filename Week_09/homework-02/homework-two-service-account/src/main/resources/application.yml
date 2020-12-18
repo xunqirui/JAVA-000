@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: account-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3307/foreign_exchange?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true
+dubbo:
+  scan:
+    base-packages: homework.service.impl
+  protocol:
+    name: dubbo
+    port: 12345
+  registry:
+    address: zookeeper://localhost:2181
+  metadata-report:
+    address: zookeeper://localhost:2181
+server:
+  port: 8080

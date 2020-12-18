@@ -34,7 +34,7 @@ public class UserInfo implements Serializable {
     /**
      * 用户唯一ID
      */
-    private String uniqueId;
+    private Long uniqueId;
     /**
      * 用户姓名
      */

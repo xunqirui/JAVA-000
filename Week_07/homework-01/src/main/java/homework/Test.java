@@ -97,6 +97,7 @@ public class Test {
         int userCount = userInfoList.size();
         int receiverCount = receiverInfoList.size();
         Long nowTimeStamp = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
+        SnowFlake snowFlake = new SnowFlake(2, 3);
         for (int i = 0; i < 1000000; i++) {
             insertPool.execute(() -> {
                 String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -109,7 +110,7 @@ public class Test {
                         .totalPrice(goodsInfo.getDiscountPrice())
                         .build();
                 OrderMainInfo orderMainInfo = OrderMainInfo.builder()
-                        .uniqueId(UUID.randomUUID().toString().replaceAll("-", ""))
+                        .uniqueId(snowFlake.nextId())
                         .insertTime(now)
                         .updateTime(now)
                         .orderStatus(random.nextInt(4))
@@ -146,6 +147,7 @@ public class Test {
         int receiverCount = receiverInfoList.size();
         List<OrderMainInfo> mainInfoList = new ArrayList<>();
         List<OrderDetail> detailList = new ArrayList<>();
+        SnowFlake snowFlake = new SnowFlake(2, 3);
         for (int i = 0; i< 1000000;i++){
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             GoodsInfo goodsInfo = goodsInfoList.get(random.nextInt(goodsCount));
@@ -157,7 +159,7 @@ public class Test {
                     .totalPrice(goodsInfo.getDiscountPrice())
                     .build();
             OrderMainInfo orderMainInfo = OrderMainInfo.builder()
-                    .uniqueId(UUID.randomUUID().toString().replaceAll("-", ""))
+                    .uniqueId(snowFlake.nextId())
                     .insertTime(now)
                     .updateTime(now)
                     .orderStatus(random.nextInt(4))
@@ -231,9 +233,10 @@ public class Test {
         String[] phoneNumber = {"18111111111", "18222222222", "18333333333"};
         String[] password = {"123456", "123456789", "1234567890"};
         String[] birthday = {"1991-01-01", "1992-01-01", "1993-01-01"};
+        SnowFlake snowFlake = new SnowFlake(4, 2);
         for (int i = 0; i < 3; i++) {
             UserInfo userInfo = UserInfo.builder()
-                    .uniqueId(UUID.randomUUID().toString().replaceAll("-", ""))
+                    .uniqueId(snowFlake.nextId())
                     .name(name[i])
                     .account(account[i])
                     .phoneNumber(phoneNumber[i])

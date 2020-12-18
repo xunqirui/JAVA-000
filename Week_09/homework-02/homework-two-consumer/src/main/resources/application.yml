@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: consumer
+
+dubbo:
+  scan:
+    base-packages: homework.service.impl
+  registry:
+    address: zookeeper://localhost:2181
+  metadata-report:
+    address: zookeeper://localhost:2181
+server:
+  port: 8082
